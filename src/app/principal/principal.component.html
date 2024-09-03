@@ -1,0 +1,22 @@
+<table>
+  <thead class="text-primary">
+  <tr>
+    <th>user id</th>
+    <th>id post</th>
+    <th>titulo</th>
+    <th>cuerpo</th>
+
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let e of postList">
+    <td>{{e.userId}}</td>
+    <td>{{e.id}}</td>
+    <td>{{e.title}}</td>
+    <td>{{e.body}}</td>
+  </tr>
+
+
+  </tbody>
+
+</table>

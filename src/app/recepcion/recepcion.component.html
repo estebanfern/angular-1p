@@ -7,9 +7,21 @@
       <!-- Formulario para agregar una nueva recepción -->
       <form (ngSubmit)="onSubmit()" #recepcionForm="ngForm">
         <div class="form-group row py-3">
-          <!-- <div class="col-6">
-
-          </div> -->
+          <div class="col-6">
+            <label for="fecha">Fecha</label>
+            <input
+              type="date"
+              id="fecha"
+              class="form-control"
+              [(ngModel)]="selectedRecepcion.fecha"
+              name="fecha"
+              required
+              #fechaInput="ngModel"
+            />
+            <div *ngIf="fechaInput.invalid && fechaInput.touched" class="text-danger">
+              <div *ngIf="fechaInput.errors?.['required']">La fecha es obligatoria.</div>
+            </div>
+          </div>
           <div class="col-6">
             <label for="idProveedor">Proveedor</label>
             <select
@@ -30,22 +42,7 @@
         </div>
 
         <div class="form-group row py-3">
-          <div class="col-4">
-            <label for="fecha">Fecha</label>
-            <input
-              type="date"
-              id="fecha"
-              class="form-control"
-              [(ngModel)]="selectedRecepcion.fecha"
-              name="fecha"
-              required
-              #fechaInput="ngModel"
-            />
-            <div *ngIf="fechaInput.invalid && fechaInput.touched" class="text-danger">
-              <div *ngIf="fechaInput.errors?.['required']">La fecha es obligatoria.</div>
-            </div>
-          </div>
-          <div class="col-4">
+          <div class="col-6">
             <label for="horaInicioAgendamiento">Hora de Inicio de Agendamiento</label>
             <input
               type="time"
@@ -60,7 +57,7 @@
               <div *ngIf="horaInicioAgendamientoInput.errors?.['required']">La hora de inicio es obligatoria.</div>
             </div>
           </div>
-          <div class="col-4">
+          <div class="col-6">
             <label for="horaFinAgendamiento">Hora de Fin de Agendamiento</label>
             <input
               type="time"

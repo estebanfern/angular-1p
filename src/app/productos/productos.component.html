@@ -1,0 +1,66 @@
+<div class="container mt-4">
+  <div class="card">
+    <div class="card-header">
+      <h3>Administración de Productos</h3>
+    </div>
+    <div class="card-body">
+      <!-- Formulario para agregar o actualizar productos -->
+      <form (ngSubmit)="onSubmit()" #productoForm="ngForm">
+        <div class="form-group">
+          <label for="nombre">Nombre del Producto</label>
+          <input
+            type="text"
+            id="nombre"
+            class="form-control"
+            [(ngModel)]="selectedProducto.nombre"
+            name="nombre"
+            required
+          />
+        </div>
+        <button type="submit" class="btn btn-primary mt-2">
+          {{ selectedProducto.idProducto ? 'Actualizar' : 'Agregar' }} Producto
+        </button>
+        <button
+          type="button"
+          class="btn btn-secondary mt-2 ml-2"
+          *ngIf="selectedProducto.idProducto"
+          (click)="resetForm()"
+        >
+          Cancelar
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <div class="card mt-4">
+    <div class="card-header">
+      <h4>Lista de Productos</h4>
+    </div>
+    <div class="card-body">
+      <!-- Tabla para listar productos -->
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let producto of productos">
+            <td>{{ producto.idProducto }}</td>
+            <td>{{ producto.nombre }}</td>
+            <td>
+              <button class="btn btn-sm btn-warning" (click)="editProducto(producto)">
+                Editar
+              </button>
+              <button class="btn btn-sm btn-danger" (click)="deleteProducto(producto.idProducto)">
+                Eliminar
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

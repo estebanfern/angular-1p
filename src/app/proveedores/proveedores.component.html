@@ -15,14 +15,14 @@
               class="form-control"
               [(ngModel)]="selectedProveedor.nombre"
               name="nombre"
-              #nombreInput="ngModel"
               required
+              #nombreInput="ngModel"
               minlength="3"
             />
-          </div>
-          <div *ngIf="nombreInput.invalid && nombreInput.touched" class="text-danger">
-            <div *ngIf="nombreInput.errors?.['required']">El nombre es obligatorio.</div>
-            <div *ngIf="nombreInput.errors?.['minlength']">El nombre debe tener al menos 3 caracteres.</div>
+            <div *ngIf="nombreInput.invalid && nombreInput.touched" class="text-danger">
+              <div *ngIf="nombreInput.errors?.['required']">El nombre es obligatorio.</div>
+              <div *ngIf="nombreInput.errors?.['minlength']">El nombre debe tener al menos 3 caracteres.</div>
+            </div>
           </div>
         </div>
 

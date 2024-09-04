@@ -7,23 +7,9 @@
       <!-- Formulario para agregar una nueva recepción -->
       <form (ngSubmit)="onSubmit()" #recepcionForm="ngForm">
         <div class="form-group row py-3">
-          <div class="col-6">
-            <label for="idJaula">Jaula</label>
-            <select
-              name="idJaula"
-              class="form-control"
-              id="idJaula"
-              [(ngModel)]="selectedRecepcion.idJaula"
-              #idJaulaInput="ngModel"
-              required
-            >
-              <option value="" disabled selected>Seleccione una opción</option>
-              <option *ngFor="let jaula of jaulaService.getJaulasDisponibles()" [ngValue]="jaula.idJaula">{{ jaula.nombre }}</option>
-            </select>
-            <div *ngIf="idJaulaInput.invalid && idJaulaInput.touched" class="text-danger">
-              <div *ngIf="idJaulaInput.errors?.['required']">La jaula es obligatoria.</div>
-            </div>
-          </div>
+          <!-- <div class="col-6">
+
+          </div> -->
           <div class="col-6">
             <label for="idProveedor">Proveedor</label>
             <select
@@ -102,6 +88,7 @@
                   <thead>
                     <tr>
                       <th>Nombre</th>
+                      <th>Cantidad</th>
                       <th>Acción</th>
                     </tr>
                   </thead>
@@ -109,12 +96,15 @@
                     <tr *ngFor="let producto of productos | paginate: { itemsPerPage: 5, currentPage: pp }">
                       <td>{{ producto.nombre }}</td>
                       <td>
-                        <!-- <button class="btn btn-sm btn-warning" (click)="edit(jaula)">
-                          Editar
+                        <input type="number" class="form-control form-control-sm" #cantidadInput value="{{hasProducto(producto.idProducto) ? getCantidadFromDetalle(producto.idProducto) : 1}}" />
+                      </td>
+                      <td>
+                        <button type="button" class="btn btn-sm btn-success" *ngIf="!hasProducto(producto.idProducto)" (click)="addProducto(producto.idProducto, +cantidadInput.value)">
+                          + Agregar
                         </button>
-                        <button class="btn btn-sm btn-danger" (click)="delete(jaula.idJaula)">
-                          Eliminar
-                        </button> -->
+                        <button type="button" class="btn btn-sm btn-danger" *ngIf="hasProducto(producto.idProducto)" (click)="removeProducto(producto.idProducto)">
+                          - Quitar
+                        </button>
                       </td>
                     </tr>
                   </tbody>
@@ -125,13 +115,13 @@
           </div>
         </div>
 
-        <button type="submit" class="btn btn-primary mt-4" [disabled]="recepcionForm.invalid">
+        <button type="submit" class="btn btn-primary mt-4" [disabled]="recepcionForm.invalid || !detalles || detalles.length < 1">
           Agregar Recepción
         </button>
         <button
           type="button"
           class="btn btn-secondary mt-4"
-          (click)="resetForm()"
+          (click)="resetForm(); resetDetalles()"
         >
           Cancelar
         </button>
@@ -171,7 +161,7 @@
             <td>{{ recepcion.horaInicioRecepcion }}</td>
             <td>{{ recepcion.horaFinRecepcion }}</td>
             <td>
-              <button class="btn btn-sm btn-info" *ngIf="recepcion.estado === Estado.PENDIENTE" (click)="recepcionar(recepcion.idTurno)">
+              <button class="btn btn-sm btn-info" *ngIf="recepcion.estado === Estado.PENDIENTE" (click)="recepcionarViewModal(recepcion.idTurno)">
                 Recepcionar
               </button>
               <button class="btn btn-sm btn-success" *ngIf="recepcion.estado === Estado.EN_RECEPCION"(click)="completar(recepcion.idTurno)">
@@ -191,3 +181,80 @@
     </div>
   </div>
 </div>
+
+<div class="modal fade" #recepcionarModal tabindex="-1" aria-labelledby="recepcionarModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="recepcionarModalLabel">Recepcionar</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <label for="idJaula">Jaula</label>
+        <select name="idJaula" class="form-control" id="idJaula" [(ngModel)]="selectedJaulaId" #idJaulaInput required>
+          <option *ngFor="let jaula of jaulas" value="{{jaula.idJaula}}">{{ jaula.nombre }}</option>
+        </select>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="recepcionar(viewId, +idJaulaInput.value)" [disabled]="!selectedJaulaId">Confirmar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" #detallesModal tabindex="-1" aria-labelledby="detallesModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="detallesModalLabel">Recepción</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row py-2">
+          <div class="col-6">
+            <span class="fw-bold">ID: </span>
+            <span>{{viewRecepcion.idTurno}}</span>
+          </div>
+          <div class="col-6">
+            <span class="fw-bold">Fecha: </span>
+            <span>{{viewRecepcion.fecha}}</span>
+          </div>
+          <div class="col-6">
+            <span class="fw-bold">Inicio agendamiento: </span>
+            <span>{{viewRecepcion.horaInicioAgendamiento}}</span>
+          </div>
+          <div class="col-6">
+            <span class="fw-bold">Fin agendamiento: </span>
+            <span>{{viewRecepcion.horaFinAgendamiento}}</span>
+          </div>
+          <div class="col-6">
+            <span class="fw-bold">Proveedor: </span>
+            <span>{{proveedorService.getById(viewRecepcion.idProveedor)?.nombre}}</span>
+          </div>
+          <div class="col-6">
+            <span class="fw-bold">Jaula: </span>
+            <span>{{jaulaService.getById(viewRecepcion.idJaula)?.nombre}}</span>
+          </div>
+          <div class="col-6">
+            <span class="fw-bold">Inicio recepción: </span>
+            <span>{{viewRecepcion.horaInicioRecepcion}}</span>
+          </div>
+          <div class="col-6">
+            <span class="fw-bold">Fin recepción: </span>
+            <span>{{viewRecepcion.horaFinRecepcion}}</span>
+          </div>
+          <div class="col-12 text-center mt-3">
+            <span class="badge text-bg-{{recepcionService.getBadgeColor(viewRecepcion.estado)}}">
+              {{ recepcionService.getText(viewRecepcion.estado) }}
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+

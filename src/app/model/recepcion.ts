@@ -13,11 +13,8 @@ export class Recepcion {
   idJaula!: number;
   horaInicioRecepcion!: string;
   horaFinRecepcion!: string;
-  jaula!: Jaula;
   detalles!: Detalle[];
   estado!: Estado;
-
-
 
   recepcionar(): void {
     this.estado = Estado.EN_RECEPCION;

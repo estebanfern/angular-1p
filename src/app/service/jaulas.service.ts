@@ -88,6 +88,7 @@ export class JaulasService {
   ocuparJaula(id: number): void {
     let jaulas = this.get();
     const jaula = jaulas.find((r) => r.idJaula === id);
+    console.log(`id jaula: ${id} jaula: ${jaula}`);
     if (jaula) {
       jaula.enUso = Uso.S;
       this.set(jaulas);
@@ -97,6 +98,7 @@ export class JaulasService {
   desocuparJaula(id: number): void {
     let jaulas = this.get();
     const jaula = jaulas.find((r) => r.idJaula === id);
+    console.log(`id jaula: ${id} jaula: ${jaula}`);
     if (jaula) {
       jaula.enUso = Uso.N;
       this.set(jaulas);

@@ -74,13 +74,14 @@ export class RecepcionService {
     }
   }
 
-  recepcionar(id: number) {
+  recepcionar(id: number, jaulaId: number) {
     let recepciones = this.get();
     let now = new Date();
     const recepcion = recepciones.find(p => p.idTurno === id);
     if (recepcion) {
       recepcion.horaInicioRecepcion = `${now.getHours()}:${now.getMinutes()}`;
       recepcion.estado = Estado.EN_RECEPCION;
+      recepcion.idJaula = jaulaId;
       this.set(recepciones);
     }
   }
@@ -94,33 +95,6 @@ export class RecepcionService {
       recepcion.estado = Estado.COMPLETADO;
       this.set(recepciones);
     }
-  }
-
-  hasProducto(id: number, productoId: number): boolean {
-    const recepcion = this.getById(id);
-    if (recepcion) {
-      return recepcion.detalles.some(d => d.idProducto === productoId);
-    }
-    return false;
-  }
-
-  addProducto(id: number, productoId: number, cantidad: number): void {
-    const recepcion = this.getById(id);
-    if (recepcion) {
-      recepcion.detalles.push({
-        idDetalle: this.generateDetalleId(recepcion),
-        cantidad : cantidad,
-        idProducto: productoId,
-      });
-      this.set(this.get().map(r => r.idTurno === id ? recepcion : r));
-    }
-  }
-
-  private generateDetalleId(recepcion: Recepcion): number {
-    if (!recepcion.detalles) {
-      recepcion.detalles = [];
-    }
-    return recepcion.detalles.length > 0 ? Math.max(...recepcion.detalles.map(p => p.idDetalle)) + 1 : 1;
   }
 
 }

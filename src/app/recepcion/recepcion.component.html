@@ -90,7 +90,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr *ngFor="let producto of productos | paginate: { itemsPerPage: 5, currentPage: pp }">
+                    <tr *ngFor="let producto of productos | paginate: { id: 'productos-paginator', itemsPerPage: 5, currentPage: pp }">
                       <td>{{ producto.nombre }}</td>
                       <td>
                         <input type="number" class="form-control form-control-sm" #cantidadInput value="{{hasProducto(producto.idProducto) ? getCantidadFromDetalle(producto.idProducto) : 1}}" />
@@ -106,7 +106,7 @@
                     </tr>
                   </tbody>
                 </table>
-                <pagination-controls (pageChange)="pp = $event"></pagination-controls>
+                <pagination-controls id="productos-paginator" (pageChange)="pp = $event"></pagination-controls>
               </div>
             </div>
           </div>
@@ -147,7 +147,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let recepcion of recepciones | paginate: { itemsPerPage: 5, currentPage: p }">
+          <tr *ngFor="let recepcion of recepciones | paginate: { id: 'recepciones-paginator', itemsPerPage: 5, currentPage: p }">
             <td>{{ recepcion.horaInicioAgendamiento }}</td>
             <td>{{ recepcion.horaFinAgendamiento }}</td>
             <td>{{ proveedorService.getById(recepcion.idProveedor)?.nombre }}</td>
@@ -174,7 +174,7 @@
           </tr>
         </tbody>
       </table>
-      <pagination-controls (pageChange)="p = $event"></pagination-controls>
+      <pagination-controls id="recepciones-paginator" (pageChange)="p = $event"></pagination-controls>
     </div>
   </div>
 </div>

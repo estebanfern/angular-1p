@@ -1,1 +1,193 @@
-<p>recepcion works!</p>
+<div class="container mt-4">
+  <div class="card card-shadow">
+    <div class="card-header">
+      <h3>Creación de Recepciones</h3>
+    </div>
+    <div class="card-body">
+      <!-- Formulario para agregar una nueva recepción -->
+      <form (ngSubmit)="onSubmit()" #recepcionForm="ngForm">
+        <div class="form-group row py-3">
+          <div class="col-6">
+            <label for="idJaula">Jaula</label>
+            <select
+              name="idJaula"
+              class="form-control"
+              id="idJaula"
+              [(ngModel)]="selectedRecepcion.idJaula"
+              #idJaulaInput="ngModel"
+              required
+            >
+              <option value="" disabled selected>Seleccione una opción</option>
+              <option *ngFor="let jaula of jaulaService.getJaulasDisponibles()" [ngValue]="jaula.idJaula">{{ jaula.nombre }}</option>
+            </select>
+            <div *ngIf="idJaulaInput.invalid && idJaulaInput.touched" class="text-danger">
+              <div *ngIf="idJaulaInput.errors?.['required']">La jaula es obligatoria.</div>
+            </div>
+          </div>
+          <div class="col-6">
+            <label for="idProveedor">Proveedor</label>
+            <select
+              name="idProveedor"
+              class="form-control"
+              id="idProveedor"
+              [(ngModel)]="selectedRecepcion.idProveedor"
+              #idProveedorInput="ngModel"
+              required
+            >
+              <option value="" disabled selected>Seleccione una opción</option>
+              <option *ngFor="let prov of proveedorService.get()" [ngValue]="prov.idProveedor">{{ prov.nombre }}</option>
+            </select>
+            <div *ngIf="idProveedorInput.invalid && idProveedorInput.touched" class="text-danger">
+              <div *ngIf="idProveedorInput.errors?.['required']">El ID del proveedor es obligatorio.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row py-3">
+          <div class="col-4">
+            <label for="fecha">Fecha</label>
+            <input
+              type="date"
+              id="fecha"
+              class="form-control"
+              [(ngModel)]="selectedRecepcion.fecha"
+              name="fecha"
+              required
+              #fechaInput="ngModel"
+            />
+            <div *ngIf="fechaInput.invalid && fechaInput.touched" class="text-danger">
+              <div *ngIf="fechaInput.errors?.['required']">La fecha es obligatoria.</div>
+            </div>
+          </div>
+          <div class="col-4">
+            <label for="horaInicioAgendamiento">Hora de Inicio de Agendamiento</label>
+            <input
+              type="time"
+              id="horaInicioAgendamiento"
+              class="form-control"
+              [(ngModel)]="selectedRecepcion.horaInicioAgendamiento"
+              name="horaInicioAgendamiento"
+              required
+              #horaInicioAgendamientoInput="ngModel"
+            />
+            <div *ngIf="horaInicioAgendamientoInput.invalid && horaInicioAgendamientoInput.touched" class="text-danger">
+              <div *ngIf="horaInicioAgendamientoInput.errors?.['required']">La hora de inicio es obligatoria.</div>
+            </div>
+          </div>
+          <div class="col-4">
+            <label for="horaFinAgendamiento">Hora de Fin de Agendamiento</label>
+            <input
+              type="time"
+              id="horaFinAgendamiento"
+              class="form-control"
+              [(ngModel)]="selectedRecepcion.horaFinAgendamiento"
+              name="horaFinAgendamiento"
+              required
+              #horaFinAgendamientoInput="ngModel"
+            />
+            <div *ngIf="horaFinAgendamientoInput.invalid && horaFinAgendamientoInput.touched" class="text-danger">
+              <div *ngIf="horaFinAgendamientoInput.errors?.['required']">La hora de fin es obligatoria.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="container py-3">
+          <div class="card card-shadow">
+            <div class="card-header">
+              <h4>Productos</h4>
+            </div>
+            <div class="form-group row card-body">
+              <div class="col-12">
+                <table class="table table-striped">
+                  <thead>
+                    <tr>
+                      <th>Nombre</th>
+                      <th>Acción</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let producto of productos | paginate: { itemsPerPage: 5, currentPage: pp }">
+                      <td>{{ producto.nombre }}</td>
+                      <td>
+                        <!-- <button class="btn btn-sm btn-warning" (click)="edit(jaula)">
+                          Editar
+                        </button>
+                        <button class="btn btn-sm btn-danger" (click)="delete(jaula.idJaula)">
+                          Eliminar
+                        </button> -->
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <pagination-controls (pageChange)="pp = $event"></pagination-controls>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary mt-4" [disabled]="recepcionForm.invalid">
+          Agregar Recepción
+        </button>
+        <button
+          type="button"
+          class="btn btn-secondary mt-4"
+          (click)="resetForm()"
+        >
+          Cancelar
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <div class="card mt-4">
+    <div class="card-header">
+      <h4>Lista de Recepciones</h4>
+    </div>
+    <div class="card-body">
+      <!-- Tabla para listar recepciones -->
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Inicio Agendamiento</th>
+            <th>Fin Agendamiento</th>
+            <th>Proveedor</th>
+            <th>Estado</th>
+            <th>Jaula</th>
+            <th>Hora Inicio Recepción</th>
+            <th>Hora Fin Recepción</th>
+            <th>Acciones</th>
+            <th>Detalles</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let recepcion of recepciones | paginate: { itemsPerPage: 5, currentPage: p }">
+            <td>{{ recepcion.horaInicioAgendamiento }}</td>
+            <td>{{ recepcion.horaFinAgendamiento }}</td>
+            <td>{{ proveedorService.getById(recepcion.idProveedor)?.nombre }}</td>
+            <td>
+              <span class="badge text-bg-{{recepcionService.getBadgeColor(recepcion.estado)}}">{{ recepcionService.getText(recepcion.estado) }}</span>
+            </td>
+            <td>{{ jaulaService.getById(recepcion.idJaula)?.nombre }}</td>
+            <td>{{ recepcion.horaInicioRecepcion }}</td>
+            <td>{{ recepcion.horaFinRecepcion }}</td>
+            <td>
+              <button class="btn btn-sm btn-info" *ngIf="recepcion.estado === Estado.PENDIENTE" (click)="recepcionar(recepcion.idTurno)">
+                Recepcionar
+              </button>
+              <button class="btn btn-sm btn-success" *ngIf="recepcion.estado === Estado.EN_RECEPCION"(click)="completar(recepcion.idTurno)">
+                Completar
+              </button>
+              <span *ngIf="recepcion.estado === Estado.COMPLETADO">
+                -
+              </span>
+            </td>
+            <td>
+              <button class="btn btn-sm btn-info" (click)="verDetalles(recepcion.idTurno)">Ver</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <pagination-controls (pageChange)="p = $event"></pagination-controls>
+    </div>
+  </div>
+</div>

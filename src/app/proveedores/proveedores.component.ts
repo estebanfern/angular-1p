@@ -3,11 +3,12 @@ import { ProveedoresService } from '../service/proveedores.service';
 import { Proveedor } from '../model/proveedor';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @Component({
   selector: 'app-proveedores',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, NgxPaginationModule],
   providers: [ProveedoresService],
   templateUrl: './proveedores.component.html',
   styleUrl: './proveedores.component.css'
@@ -16,6 +17,7 @@ export class ProveedoresComponent {
 
   proveedores: Proveedor[] = [];
   selectedProveedor: Proveedor = new Proveedor();
+  p: number = 1;
 
   constructor (private proveedoresService: ProveedoresService) {
   }

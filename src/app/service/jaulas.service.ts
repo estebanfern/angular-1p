@@ -58,9 +58,9 @@ export class JaulasService {
   getBadgeColor(uso: Uso): string {
     switch (uso) {
       case Uso.S:
-        return 'success';
-      case Uso.N:
         return 'danger';
+      case Uso.N:
+        return 'success';
       default:
         return 'secondary';
     }
@@ -69,11 +69,37 @@ export class JaulasService {
   getText(uso: Uso): string {
     switch (uso) {
       case Uso.S:
-        return 'DISPONIBLE';
+        return 'Ocupado';
       case Uso.N:
-        return 'OCUPADO';
+        return 'Disponible';
       default:
-        return 'DESCONOCIDO';
+        return 'Desconocido';
+    }
+  }
+
+  getJaulasDisponibles(): Jaula[] {
+    return this.get().filter(j => j.enUso === Uso.N);
+  }
+
+  getJaulasOcupadas(): Jaula[] {
+    return this.get().filter(j => j.enUso === Uso.S);
+  }
+
+  ocuparJaula(id: number): void {
+    let jaulas = this.get();
+    const jaula = jaulas.find((r) => r.idJaula === id);
+    if (jaula) {
+      jaula.enUso = Uso.S;
+      this.set(jaulas);
+    }
+  }
+
+  desocuparJaula(id: number): void {
+    let jaulas = this.get();
+    const jaula = jaulas.find((r) => r.idJaula === id);
+    if (jaula) {
+      jaula.enUso = Uso.N;
+      this.set(jaulas);
     }
   }
 

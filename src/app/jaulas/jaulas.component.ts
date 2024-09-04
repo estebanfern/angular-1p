@@ -3,11 +3,12 @@ import { JaulasService } from '../service/jaulas.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Jaula, Uso } from '../model/jaula';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @Component({
   selector: 'app-jaulas',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, NgxPaginationModule],
   providers: [JaulasService],
   templateUrl: './jaulas.component.html',
   styleUrl: './jaulas.component.css'
@@ -17,6 +18,7 @@ export class JaulasComponent {
   jaulas: Jaula[] = [];
   selectedJaula: Jaula = new Jaula();
   usos = Object.values(Uso);
+  p: number = 1;
 
   constructor (public jaulaService: JaulasService) {
   }

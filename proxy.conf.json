@@ -1,7 +1,0 @@
-{
-  "/pais": {
-    "target": "https://www.equipoyosh.com/stock-irimaq",
-    "secure": false,
-    "logLevel": "debug"
-  }
-}

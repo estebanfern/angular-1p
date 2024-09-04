@@ -3,11 +3,12 @@ import { ProductosService } from '../service/productos.service';
 import { Producto } from '../model/producto';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @Component({
   selector: 'app-productos',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, NgxPaginationModule],
   providers: [ProductosService],
   templateUrl: './productos.component.html',
   styleUrls: ['./productos.component.css']
@@ -16,6 +17,8 @@ export class ProductosComponent implements OnInit {
 
   productos: Producto[] = [];
   selectedProducto: Producto = { idProducto: 0, nombre: '' }; // Inicializa un nuevo producto vacío
+  p: number = 1;
+
 
   constructor(private productosService: ProductosService) {}
 

@@ -1,2 +1,26 @@
+<header class="mb-5" style="margin-bottom: 5rem !important;">
+  <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+    <a class="navbar-brand" href="/">Primer Parcial - Programaición FrontEnd</a>
+    <div class="collapse navbar-collapse" id="navbarCollapse">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active" *ngFor="let route of routes">
+          <a class="nav-link" href="{{route.path}}">{{route.title}}</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</header>
 
-<router-outlet />
+<!-- Begin page content -->
+<main role="main" class="container mt-5">
+  <div class="container mt-5">
+    <!-- Tu contenido aquí -->
+  </div>
+  <router-outlet></router-outlet>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <span class="text-muted">Autores: Esteban Fernández, Fabrizio Roman, Juan David</span>
+  </div>
+</footer>

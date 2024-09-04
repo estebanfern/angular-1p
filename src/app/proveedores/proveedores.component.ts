@@ -18,6 +18,7 @@ export class ProveedoresComponent {
   proveedores: Proveedor[] = [];
   selectedProveedor: Proveedor = new Proveedor();
   p: number = 1;
+  filterTerm: string = '';
 
   constructor (private proveedoresService: ProveedoresService) {
   }
@@ -64,5 +65,19 @@ export class ProveedoresComponent {
     this.proveedoresService.delete(id);
     this.proveedores = this.proveedoresService.get();
   }
+
+  get filteredProveedores(): Proveedor[] {
+    if (!this.filterTerm) {
+      return this.proveedores;
+    }
+    return this.proveedores.filter(proveedor =>
+      proveedor.nombre.toLowerCase().includes(this.filterTerm.toLowerCase())
+    );
+  }
+
+  clearFilter(): void {
+    this.filterTerm = '';
+  }
+
 
 }

@@ -47,6 +47,14 @@
     </div>
     <div class="card-body">
       <!-- Tabla para listar proveedores -->
+      <div class="row">
+        <div class="col-6 mb-3 form-group">
+          <input type="text" class="form-control" placeholder="Buscar por nombre" [(ngModel)]="filterTerm" />
+        </div>
+        <div class="col-1 mb-3 form-group">
+          <button class="btn btn-primary" (click)="clearFilter()">Limpiar</button>
+        </div>
+      </div>
       <table class="table table-striped">
         <thead>
           <tr>
@@ -56,7 +64,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let proveedor of proveedores  | paginate: { itemsPerPage: 5, currentPage: p }">
+          <tr *ngFor="let proveedor of filteredProveedores  | paginate: { itemsPerPage: 5, currentPage: p }">
             <td>{{ proveedor.idProveedor }}</td>
             <td>{{ proveedor.nombre }}</td>
             <td>

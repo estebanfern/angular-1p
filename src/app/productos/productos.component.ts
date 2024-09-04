@@ -18,6 +18,7 @@ export class ProductosComponent implements OnInit {
   productos: Producto[] = [];
   selectedProducto: Producto = { idProducto: 0, nombre: '' }; // Inicializa un nuevo producto vacío
   p: number = 1;
+  filterTerm: string = '';
 
 
   constructor(private productosService: ProductosService) {}
@@ -54,4 +55,18 @@ export class ProductosComponent implements OnInit {
     this.productosService.deleteProducto(id);
     this.loadProductos();
   }
+
+  get filteredProductos(): Producto[] {
+    if (!this.filterTerm) {
+      return this.productos;
+    }
+    return this.productos.filter(producto =>
+      producto.nombre.toLowerCase().includes(this.filterTerm.toLowerCase())
+    );
+  }
+
+  clearFilter(): void {
+    this.filterTerm = '';
+  }
+
 }

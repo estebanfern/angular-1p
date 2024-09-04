@@ -7,7 +7,6 @@ import { FormsModule } from '@angular/forms';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { JaulasService } from '../service/jaulas.service';
 import { ProveedoresService } from '../service/proveedores.service';
-import { TimeFormatPipe } from '../pipe/timeFormat';
 import { ProductosService } from '../service/productos.service';
 import { Producto } from '../model/producto';
 import { Modal } from 'bootstrap';
@@ -17,7 +16,7 @@ import { Jaula } from '../model/jaula';
   selector: 'app-recepcion',
   standalone: true,
   imports: [CommonModule, FormsModule, NgxPaginationModule],
-  providers: [RecepcionService, JaulasService, ProveedoresService, TimeFormatPipe, ProductosService],
+  providers: [RecepcionService, JaulasService, ProveedoresService, ProductosService],
   templateUrl: './recepcion.component.html',
   styleUrl: './recepcion.component.css'
 })

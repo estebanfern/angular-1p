@@ -19,6 +19,7 @@ export class JaulasComponent {
   selectedJaula: Jaula = new Jaula();
   usos = Object.values(Uso);
   p: number = 1;
+  filterTerm: string = '';
 
   constructor (public jaulaService: JaulasService) {
   }
@@ -64,6 +65,19 @@ export class JaulasComponent {
   delete(id: number): void {
     this.jaulaService.delete(id);
     this.jaulas = this.jaulaService.get();
+  }
+
+  get filteredJaulas(): Jaula[] {
+    if (!this.filterTerm) {
+      return this.jaulas;
+    }
+    return this.jaulas.filter(jaula =>
+      jaula.nombre.toLowerCase().includes(this.filterTerm.toLowerCase())
+    );
+  }
+
+  clearFilter(): void {
+    this.filterTerm = '';
   }
 
 }

@@ -1,0 +1,66 @@
+<div class="container mt-4">
+  <div class="card">
+    <div class="card-header">
+      <h3>Administración de Proveedores</h3>
+    </div>
+    <div class="card-body">
+      <!-- Formulario para agregar o actualizar proveedores -->
+      <form (ngSubmit)="onSubmit()" #proveedorForm="ngForm">
+        <div class="form-group">
+          <label for="nombre">Nombre del Proveedor</label>
+          <input
+            type="text"
+            id="nombre"
+            class="form-control"
+            [(ngModel)]="selectedProveedor.nombre"
+            name="nombre"
+            required
+          />
+        </div>
+        <button type="submit" class="btn btn-primary mt-2">
+          {{ selectedProveedor.idProveedor ? 'Actualizar' : 'Agregar' }} Proveedor
+        </button>
+        <button
+          type="button"
+          class="btn btn-secondary mt-2 ml-2"
+          *ngIf="selectedProveedor.idProveedor"
+          (click)="resetForm()"
+        >
+          Cancelar
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <div class="card mt-4">
+    <div class="card-header">
+      <h4>Lista de Proveedores</h4>
+    </div>
+    <div class="card-body">
+      <!-- Tabla para listar proveedores -->
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let proveedor of proveedores">
+            <td>{{ proveedor.idProveedor }}</td>
+            <td>{{ proveedor.nombre }}</td>
+            <td>
+              <button class="btn btn-sm btn-warning" (click)="editProveedor(proveedor)">
+                Editar
+              </button>
+              <button class="btn btn-sm btn-danger" (click)="deleteProveedor(proveedor.idProveedor)">
+                Eliminar
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

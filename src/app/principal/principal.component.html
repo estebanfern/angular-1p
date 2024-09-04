@@ -1,22 +1,24 @@
-<table>
-  <thead class="text-primary">
-  <tr>
-    <th>user id</th>
-    <th>id post</th>
-    <th>titulo</th>
-    <th>cuerpo</th>
-
-  </tr>
-  </thead>
-  <tbody>
-  <tr *ngFor="let e of postList">
-    <td>{{e.userId}}</td>
-    <td>{{e.id}}</td>
-    <td>{{e.title}}</td>
-    <td>{{e.body}}</td>
-  </tr>
-
-
-  </tbody>
-
-</table>
+<div class="card">
+  <h5 class="card-header">Proveedores</h5>
+  <div class="card-body">
+    <h5 class="card-title"></h5>
+      <table class="table table-striped">
+        <thead class="table-danger">
+        <tr>
+          <th>user id</th>
+          <th>id post</th>
+          <th>titulo</th>
+          <th>cuerpo</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let e of postList">
+          <td>{{e.userId}}</td>
+          <td>{{e.id}}</td>
+          <td>{{e.title}}</td>
+          <td>{{e.body}}</td>
+        </tr>
+        </tbody>
+      </table>
+  </div>
+</div>

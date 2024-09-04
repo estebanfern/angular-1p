@@ -38,6 +38,7 @@ export class JaulasComponent {
       this.jaulaService.update(this.selectedJaula);
     } else {
       // Agregar nuevo jaula
+      this.selectedJaula.enUso = Uso.N;
       this.jaulaService.add(this.selectedJaula);
     }
     this.load();

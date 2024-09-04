@@ -25,7 +25,7 @@
               <div *ngIf="nombreInput.errors?.['minlength']">El nombre debe tener al menos 3 caracteres.</div>
             </div>
           </div>
-          <div class="col-6">
+          <!-- <div class="col-6">
             <label for="enUso">En uso</label>
             <select
               name="enUso"
@@ -35,11 +35,10 @@
               #enUsoSelect="ngModel"
               required
             >
-              <!-- Opción por defecto deshabilitada -->
               <option value="" disabled selected>Seleccione una opción</option>
               <option *ngFor="let uso of usos" [value]="uso">{{ jaulaService.getText(uso) }}</option>
             </select>
-          </div>
+          </div> -->
         </div>
         <button type="submit" class="btn btn-primary mt-2" [disabled]="jaulaForm.invalid">
           {{ selectedJaula.idJaula ? 'Actualizar' : 'Agregar' }} Jaula

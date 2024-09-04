@@ -11,43 +11,43 @@ export class ProveedoresService {
   constructor() { }
 
   // Create
-  addProveedor(proveedor: Proveedor): void {
-    const proveedores = this.getProveedores();
+  add(proveedor: Proveedor): void {
+    const proveedores = this.get();
     proveedor.idProveedor = this.generateId(proveedores);
     proveedores.push(proveedor);
-    this.setProveedores(proveedores);
+    this.set(proveedores);
   }
 
   // Read
-  getProveedores(): Proveedor[] {
+  get(): Proveedor[] {
     const proveedoresJson = localStorage.getItem(this.localStorageKey);
     return proveedoresJson ? JSON.parse(proveedoresJson) : [];
   }
 
-  getProveedorById(id: number): Proveedor | undefined {
-    const proveedores = this.getProveedores();
+  getById(id: number): Proveedor | undefined {
+    const proveedores = this.get();
     return proveedores.find(p => p.idProveedor === id);
   }
 
   // Update
-  updateProveedor(updatedProveedor: Proveedor): void {
-    const proveedores = this.getProveedores();
+  update(updatedProveedor: Proveedor): void {
+    const proveedores = this.get();
     const index = proveedores.findIndex(p => p.idProveedor === updatedProveedor.idProveedor);
     if (index !== -1) {
       proveedores[index] = updatedProveedor;
-      this.setProveedores(proveedores);
+      this.set(proveedores);
     }
   }
 
   // Delete
-  deleteProveedor(id: number): void {
-    let proveedores = this.getProveedores();
+  delete(id: number): void {
+    let proveedores = this.get();
     proveedores = proveedores.filter(p => p.idProveedor !== id);
-    this.setProveedores(proveedores);
+    this.set(proveedores);
   }
 
   // Private helper methods
-  private setProveedores(proveedores: Proveedor[]): void {
+  private set(proveedores: Proveedor[]): void {
     localStorage.setItem(this.localStorageKey, JSON.stringify(proveedores));
   }
 

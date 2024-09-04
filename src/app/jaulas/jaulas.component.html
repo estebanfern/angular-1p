@@ -1,0 +1,94 @@
+<div class="container mt-4">
+  <div class="card">
+    <div class="card-header">
+      <h3>Administración de Jaulas</h3>
+    </div>
+    <div class="card-body">
+      <!-- Formulario para agregar o actualizar jaulas -->
+      <form (ngSubmit)="onSubmit()" #jaulaForm="ngForm">
+        <div class="form-group row">
+          <div class="col-6">
+            <label for="nombre">Nombre de la jaula</label>
+            <input
+              type="text"
+              id="nombre"
+              class="form-control"
+              [(ngModel)]="selectedJaula.nombre"
+              name="nombre"
+              #nombreInput="ngModel"
+              required
+              minlength="3"
+            />
+            <!-- Mensaje de error -->
+            <div *ngIf="nombreInput.invalid && nombreInput.touched" class="text-danger">
+              <div *ngIf="nombreInput.errors?.['required']">El nombre es obligatorio.</div>
+              <div *ngIf="nombreInput.errors?.['minlength']">El nombre debe tener al menos 3 caracteres.</div>
+            </div>
+          </div>
+          <div class="col-6">
+            <label for="enUso">En uso</label>
+            <select
+              name="enUso"
+              class="form-control"
+              id="enUso"
+              [(ngModel)]="selectedJaula.enUso"
+              #enUsoSelect="ngModel"
+              required
+            >
+              <!-- Opción por defecto deshabilitada -->
+              <option value="" disabled selected>Seleccione una opción</option>
+              <option *ngFor="let uso of usos" [value]="uso">{{ jaulaService.getText(uso) }}</option>
+            </select>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary mt-2" [disabled]="jaulaForm.invalid">
+          {{ selectedJaula.idJaula ? 'Actualizar' : 'Agregar' }} Jaula
+        </button>
+        <button
+          type="button"
+          class="btn btn-secondary mt-2 ml-2"
+          *ngIf="selectedJaula.idJaula"
+          (click)="resetForm()"
+        >
+          Cancelar
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <div class="card mt-4">
+    <div class="card-header">
+      <h4>Lista de Jaulas</h4>
+    </div>
+    <div class="card-body">
+      <!-- Tabla para listar jaulas -->
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>En uso</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let jaula of jaulas">
+            <td>{{ jaula.idJaula }}</td>
+            <td>{{ jaula.nombre }}</td>
+            <td>
+              <span class="badge text-bg-{{jaulaService.getBadgeColor(jaula.enUso)}}">{{ jaulaService.getText(jaula.enUso) }}</span>
+            </td>
+            <td>
+              <button class="btn btn-sm btn-warning" (click)="edit(jaula)">
+                Editar
+              </button>
+              <button class="btn btn-sm btn-danger" (click)="delete(jaula.idJaula)">
+                Eliminar
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

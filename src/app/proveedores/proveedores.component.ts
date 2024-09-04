@@ -21,26 +21,26 @@ export class ProveedoresComponent {
   }
 
   ngOnInit(): void {
-    this.proveedores = this.proveedoresService.getProveedores();
+    this.proveedores = this.proveedoresService.get();
   }
 
-  loadProveedores(): void {
-    this.proveedores = this.proveedoresService.getProveedores();
+  load(): void {
+    this.proveedores = this.proveedoresService.get();
   }
 
   onSubmit(): void {
     if (this.selectedProveedor.idProveedor) {
       // Actualizar proveedor existente
-      this.proveedoresService.updateProveedor(this.selectedProveedor);
+      this.proveedoresService.update(this.selectedProveedor);
     } else {
       // Agregar nuevo proveedor
-      this.proveedoresService.addProveedor(this.selectedProveedor);
+      this.proveedoresService.add(this.selectedProveedor);
     }
     this.resetForm();
-    this.loadProveedores();
+    this.load();
   }
 
-  editProveedor(proveedor: Proveedor): void {
+  edit(proveedor: Proveedor): void {
     this.selectedProveedor = { ...proveedor }; // Copia los valores del proveedor seleccionado
   }
 
@@ -48,19 +48,19 @@ export class ProveedoresComponent {
     this.selectedProveedor = new Proveedor(); // Restablece el formulario a un nuevo proveedor vacío
   }
 
-  addProveedor(proveedor: Proveedor): void {
-    this.proveedoresService.addProveedor(proveedor);
-    this.proveedores = this.proveedoresService.getProveedores();
+  add(proveedor: Proveedor): void {
+    this.proveedoresService.add(proveedor);
+    this.proveedores = this.proveedoresService.get();
   }
 
-  updateProveedor(proveedor: Proveedor): void {
-    this.proveedoresService.updateProveedor(proveedor);
-    this.proveedores = this.proveedoresService.getProveedores();
+  update(proveedor: Proveedor): void {
+    this.proveedoresService.update(proveedor);
+    this.proveedores = this.proveedoresService.get();
   }
 
-  deleteProveedor(id: number): void {
-    this.proveedoresService.deleteProveedor(id);
-    this.proveedores = this.proveedoresService.getProveedores();
+  delete(id: number): void {
+    this.proveedoresService.delete(id);
+    this.proveedores = this.proveedoresService.get();
   }
 
 }

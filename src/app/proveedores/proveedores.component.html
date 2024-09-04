@@ -6,18 +6,27 @@
     <div class="card-body">
       <!-- Formulario para agregar o actualizar proveedores -->
       <form (ngSubmit)="onSubmit()" #proveedorForm="ngForm">
-        <div class="form-group">
-          <label for="nombre">Nombre del Proveedor</label>
-          <input
-            type="text"
-            id="nombre"
-            class="form-control"
-            [(ngModel)]="selectedProveedor.nombre"
-            name="nombre"
-            required
-          />
+        <div class="form-group row">
+          <div class="col-6">
+            <label for="nombre">Nombre del Proveedor</label>
+            <input
+              type="text"
+              id="nombre"
+              class="form-control"
+              [(ngModel)]="selectedProveedor.nombre"
+              name="nombre"
+              #nombreInput="ngModel"
+              required
+              minlength="3"
+            />
+          </div>
+          <div *ngIf="nombreInput.invalid && nombreInput.touched" class="text-danger">
+            <div *ngIf="nombreInput.errors?.['required']">El nombre es obligatorio.</div>
+            <div *ngIf="nombreInput.errors?.['minlength']">El nombre debe tener al menos 3 caracteres.</div>
+          </div>
         </div>
-        <button type="submit" class="btn btn-primary mt-2">
+
+        <button type="submit" class="btn btn-primary mt-2" [disabled]="proveedorForm.invalid">
           {{ selectedProveedor.idProveedor ? 'Actualizar' : 'Agregar' }} Proveedor
         </button>
         <button
@@ -51,10 +60,10 @@
             <td>{{ proveedor.idProveedor }}</td>
             <td>{{ proveedor.nombre }}</td>
             <td>
-              <button class="btn btn-sm btn-warning" (click)="editProveedor(proveedor)">
+              <button class="btn btn-sm btn-warning" (click)="edit(proveedor)">
                 Editar
               </button>
-              <button class="btn btn-sm btn-danger" (click)="deleteProveedor(proveedor.idProveedor)">
+              <button class="btn btn-sm btn-danger" (click)="delete(proveedor.idProveedor)">
                 Eliminar
               </button>
             </td>
